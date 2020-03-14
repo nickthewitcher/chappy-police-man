@@ -1,31 +1,37 @@
-# Original Coast Clothing Messenger Bot
+# Chappy Police Man
 
-Original Coast Clothing (OC) is a fictional clothing brand created to showcase key features of the Messenger Platform. OC leverages key features to deliver a great customer experience. Using this demo as inspiration, you can create a delightful messaging experience that leverages both automation and live customer support. We are also providing the open source code of the app and a guide to deploy the experience on your local environment or remote server.
+We listen daily to different events of citizen insecurity that unfortunately occur in our country and we know that we could be part of the statistics. Our authorities, despite doing their best to combat this situation, is not enough.
+When these events occur, we seek prompt help from our police, however, our reporting system is manual, bureaucratic and cumbersome, this generates a loss of vital time to take action and in many cases, the report is not specified.
+This is how Chappy is your friend bot, which seeks to eliminate all those barriers and be the bridge that allows us to simplify this search for help.
 
-[Access the Messenger experience](https://m.me/OriginalCoastClothing?ref=GITHUB)
+[Access the Messenger experience](https://www.messenger.com/t/111154927148468)
 
-![Messenger Experience](public/experience.png)
+![Messenger Experience](public/smartchappyfront1.png)
 
-See the [Developer Documentations on this experience](https://developers.facebook.com/docs/messenger-platform/getting-started/sample-apps/original-coast-clothing).
+## How we build it
 
-# Setting up your Messenger App
+After brainstorming, we finally opted for the idea of helping people connect with the police service quickly and easily through an interactive chat.
+For that, we support ourselves with the following technologies:
 
+1. Node.js: A JavaScript runtime built on Chrome's V8 JavaScript engine
+2. Express.js: Fast, unopinionated, minimalist web framework for Node.js
+3. i18n: Lightweight simple translation module with dynamic json storage
+4. Pdfkit: PDF document generation library for Node and the browser that makes creating complex, multi-page, printable documents easy.
+5. Original Coast Clothing: Is a Messenger bot for a fictional clothing brand created to showcase key features of the Messenger Platform. 
+6. Facebook API: Set of definitions and protocols for building and integrating Facebook into your apps.
 ## Requirements
 
 - **Facebook Page:** Will be used as the identity of your messaging experience. When people chat with your page. To create a new Page, visit https://www.facebook.com/pages/create.
 - **Facebook Developer Account:** Required to create new apps, which are the core of any Facebook integration. You can create a new developer account by going to the [Facebook Developers website](https://developers.facebook.com/) and clicking the "Get Started" button.
 - **Facebook App:** Contains the settings for your Messenger automation, including access tokens. To create a new app, visit your [app dashboard](https://developers.facebook.com/apps).
 
-## Setup Steps
 
-Before you begin, make sure you have completed all of the requirements listed above. At this point you should have a Page and a registered Facebook App.
-
-#### Get the App id and App Secret
+#### How to boostrap Chappy Police Man
 
 1. Go to your app Basic Settings, [Find your app here](https://developers.facebook.com/apps)
 2. Save the **App ID** number and the **App Secret**
 
-#### Grant  Messenger access to your Facebook App
+#### Grant  Messenger access to Chappy Police Man
 
 1. Go to your app Dashboard
 2. Under Add Product find Messenger and click Set Up
@@ -41,67 +47,16 @@ Before you begin, make sure you have completed all of the requirements listed ab
 Clone this repository on your local machine:
 
 ```bash
-$ git clone git@github.com:fbsamples/original-coast-clothing.git
-$ cd original-coast-clothing
+$ git clone https://github.com/nickthewitcher/chappy-police-man.git
+$ cd chappy-police-man
 ```
 
 You will need:
 
-- [Node](https://nodejs.org/en/) 10.x or higher
-- [Localtunnel](https://github.com/localtunnel/localtunnel) or remote server like [Heroku](https://www.heroku.com/)
+- [Node](https://nodejs.org/en/) 12.x or higher
+- [Azure](https://azure.microsoft.com/) or remote server like [Heroku](https://www.heroku.com/) 
 
 # Usage
-
-## Using Local Tunnel
-
-#### 1. Install the dependencies
-
-```bash
-$ npm install
-```
-
-Alternatively, you can use [Yarn](https://yarnpkg.com/en/):
-
-```bash
-$ yarn install
-```
-
-#### 2. Install Local Tunnel
-```bash
-npm install -g localtunnel
-```
-
-Open a new terminal tab and request a tunnel to your local server with your preferred port
-```bash
-lt --port 3000
-```
-
-#### 3. Rename the file `.sample.env` to `.env`
-
-```bash
-mv .sample.env .env
-```
-
- Edit the `.env` file to add all the values for your app and page. Then run your app locally using the built-in web server
-
-#### 4. Run your app locally using the built-in web server<
-
-```bash
-node app.js
-```
-
-You should now be able to access the application in your browser at [http://localhost:3000](http://localhost:3000)
-
-#### 5. Configure your webhook subcription and set the Messenger profile
-
-Use the `VERIFY_TOKEN` that you created in `.env` file and call the **/profile** endpoint like so:
-```
-http://localhost:3000/profile?mode=all&verify_token=verify-token
-```
-
-#### 6. Test that your app setup is successful
-
-Send a message to your Page from Facebook or in Messenger, if your webhook receives an event, you have fully set up your app! Voilà!
 
 ## Using Heroku
 #### 1. Install the Heroku CLI
@@ -136,9 +91,9 @@ git push heroku master
 
 #### 6. Test that your app setup is successful
 
-  Send a message to your Page from Facebook or in Messenger, if your webhook receives an event, you have fully set up your app! Voilà!
+  Send a message to your Page from Facebook or in Messenger, if your webhook receives an event, you have fully set up Chappy Police Man!
 
 ## License
-Sample Messenger App Original Coast Clothing is BSD licensed, as found in the LICENSE file.
+Chappy Police Man is based in the Sample Messenger App Original Coast Clothing which is BSD licensed, as found in the LICENSE file.
 
 See the [CONTRIBUTING](CONTRIBUTING.md) file for how to help out.
