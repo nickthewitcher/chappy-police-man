@@ -61,12 +61,14 @@ module.exports = class Survey {
             payload: "CARE_HELP"
           }
         ]);
+        console.log("Survey.js help");
         break;
 
       case "CSAT_SUGGESTION":
         response = Response.genText(i18n.__("survey.suggestion"));
         break;
     }
+    console.log("Survey.js 60 help");
 
     return response;
   }

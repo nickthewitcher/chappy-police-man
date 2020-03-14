@@ -1,6 +1,6 @@
 {
   "profile": {
-    "greeting": "¡Te damos la bienvenida a Original Coast Clothing, {{user_first_name}}! Haz clic para empezar a disfrutar de nuestra experiencia de mensajes automáticos de muestra. Si quieres crear una experiencia similar, visita https://fb.me/get-sample-oc"
+    "greeting": "¡Te damos la bienvenida a Chappy Police Man, {{user_first_name}}! Haz clic para empezar a enviar tus denuncias policiales."
   },
   "menu": {
     "support": "Atención al cliente",
@@ -8,12 +8,38 @@
     "help": "Hablar con un agente",
     "suggestion": "Sugerencias de ropa",
     "shop": "Comprar",
-    "start_over": "Volver a empezar"
+    "start_over": "Volver a empezar",
+    "complaints_1": "Robo o Hurto",
+    "complaints_2": "Asalto",
+    "complaints_3": "Agresión",
+    "complaints_4": "Extorsión",
+    "yes": "Sí",
+    "no": "No"
   },
   "get_started": {
-    "welcome": "¡Hola, {{userFirstName}}! Te damos la bienvenida a Original Coast Clothing, donde encontrarás estilos para toda ocasión.",
-    "guidance": "Puedes usar el menú a continuación para navegar por las funciones en cualquier momento.",
-    "help": "¿Cómo podemos ayudarte hoy?"
+    "welcome": "¡Hola, {{userFirstName}}! Mi nombre es Chappy Police Man, ahora ya puedes enviarme tus denuncias policiales.",
+    "guidance": "No te preocupes estamos aquí para ayudarte en el menor tiempo posible.",
+    "input_select": "Por favor selecciona el tipo de denuncia que deseas reportar.",
+    "help": "¿Cómo podemos ayudarte hoy?",
+    "input_name": "Por favor ingresa tu nombre completo",
+    "input_dni": "Por favor ingresa tu número de identificación o DNI",
+    "input_cel": "Por favor ingresa tu número de celular",
+    "input_email": "Por favor ingresa tu correo electrónico",
+    "input_addres_complaint": "Por favor ingresa la dirección donde ocurrió el delito",
+    "input_attachment_photo_solitude": "Por favor adjunte una fotografía de usted",
+    "input_security": "Verificación de identidad: Por favor ingrese la siguiente combinación, el apellido materno de su papá y el año de nacimiento de su mamá"
+  },
+  "complaints1flow": {
+    "features_confirmation1": "La opción que elegiste fue Robo. ¿Es correcta?"
+  },
+  "complaints2flow": {
+    "features_confirmation2": "La opción que elegiste fue Asalto. ¿Es correcta?"
+  },
+  "complaints3flow": {
+    "features_confirmation3": "La opción que elegiste fue Agresión. ¿Es correcta?"
+  },
+  "complaints4flow": {
+    "features_confirmation4": "La opción que elegiste fue Extorsión. ¿Es correcta?"
   },
   "leadgen": {
     "promo": "Hola, {{userFirstName}}. Ahora encontrar ropa genial es más fácil y conveniente.",
@@ -33,7 +59,7 @@
     "party": "Fiesta",
     "sales": "Hablar con el equipo de ventas",
     "shop": "Comprar este look",
-    "title": "Colección verano 2019",
+    "title": "Colección verano 2019",
     "subtitle": "Ropa destacada",
     "show": "Otro look"
   },
@@ -69,6 +95,61 @@
   },
   "fallback": {
     "any": "Lo siento, pero no reconozco \"{{message}}\".",
-    "attachment": "Gracias por enviar este archivo adjunto; ahora podemos comunicarte con un agente para que lo revise o puedes volver a empezar"
+    "attachment": "Gracias por enviar este archivo adjunto; ahora podemos comunicarte con un agente para que lo revise o puedes volver a empezar",
+    "birthday": "Por favor ingresa tu fecha de nacimiento DD/MM/AA",
+    "cel": "Por favor ingresa tu número de celular",
+    "email": "Por favor ingresa tu email",
+    "address": "Por favor ingresa tu dirección",
+    "wrong": "La información ingresada es inválida. Por favor intente de nuevo.",
+    "dni": "Un gusto en conocerte \"{{message}}\". Por favor ingrese el número de DNI",
+    "photoquestion": "Por favor adjunte una fotografía de usted, en lo posible tomese la foto ahora o incluya una actual. Deberá distinguirse las orejas, el rostro y parte del cuello. ",
+    "preparationquestion": "¿Los datos ingresados son correctos?",
+    "when": "Vamos bien, ahora cuéntame.¿Cuando ocurrieron los hechos? DD/MM/AA HH:MM",
+    "pickpersontarget": "Por favor, elije alguna de las siguientes opciones",
+    "worry": "No te preocupes, estamos aquí para ayudarte en el menor tiempo posible.",
+    "picktypecomplaints": "Por favor selecciona el tipo de denuncia que deseas reportar.",
+    "correct_option": "Tranquilo, sentimos mucho lo que te ha ocurrido. Ahora necesitaré algunos datos para iniciar con tu denuncia.",
+    "requestdata": "Necesitaré algunos datos para iniciar con tu denuncia",
+    "reviewinputdata": "¿Por favor revisa  los datos ingresados son correctos?",
+    "datefact": "Vamos bien, ahora cuéntame, ¿Cuándo ocurrieron los hechos? DD/MM/AA HH:MM",
+    "scenefact": "¿En qué lugar ocurrió? Por favor trata de ser específico.",
+    "specificfact": "Cuéntame ¿Cómo sucedió? Trata de incluir la siguiente información:",
+    "questionvidence": "¿Desea adjuntar alguna evidencia?",
+    "attachevidence": "Por favor adjunta la fotografía/documento de la evidencia.",
+    "details1": "Detalle de las víctimas y delincuentes, información de los objetos robados.",
+    "details2": "Detalle de las víctimas y delincuentes, de las armas uilizadas y de los objetos robados.",
+    "details3": "Detalle de los agresores y de las armas utilizadas",
+    "details4": "Detalle de  la extorsion, extorsionadores, frecuencia de extorsión",
+    "recomendation1": "Entiendo lamentamos lo sucedido, recuerda que para salvaguardar  tu integridad, no debes poner resistencia ante un robo.",
+    "recomendation2": "Por favor si sufriste algún tipo de daño. acércate al centro médico más cercano.",
+    "recomendation3": "Por favor si sufriste algún tipo de daño. acércate al centro médico más cercano.",
+    "recomendation4": "Recomendamos  comunicarte cuanto antes con la policia para salvaguardar tu integridad.",
+    "evidence": "¿Desea adjuntar alguna evidencia?",
+    "evidence_input": "Por favor, adjunte la evidencia.",
+    "pdfpath": "Puedes descargar una copia de tu denuncia desde el siguiente enlace:",
+    "dontworry": "Listo, no te preocupes, tu denuncia ha sido registrada y será derivada a las entidades pertinentes",
+    "finish2": "Te atendió Chappy Police Man, espero haberte ayudado. Que tengas un buen día."
+  },
+  "titles": {
+    "title_en": "FORMULARIO DE RECEPCIÓN DE DENUNCIAS POLICIALES",
+    "titl_per_en": "DATOS GENERALES DEL DENUNCIANTE",
+    "title_com_en": "DATOS DE LA DENUNCIA",
+    "download_here": "Descargar denuncia."
+  },
+  "report": {
+    "fullname_en": "Nombres y Apellidos: ",
+    "iddoc_en": "Documento de identidad o pasaporte: ",
+    "birthday_en": "Fecha de nacimiento: ",
+    "telephone_en": "Nro. de celular: ",
+    "email_en": "Correo electrónico: ",
+    "address_en": "Dirección: ",
+    "type_en": "Tipo de denuncia: ",
+    "datetime_en": "Fecha y hora: ",
+    "place_en": "Lugar: ",
+    "details_en": "Detalle de los hechos: ",
+    "evidence_en": "Evidencia: ",
+    "idreport_en": "ID de denuncia: ",
+    "sign_complainant": "Firma del denunciante",
+    "sign_authority": "Firma del comandante"
   }
 }

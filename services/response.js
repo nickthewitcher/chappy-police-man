@@ -47,7 +47,6 @@ module.exports = class Response {
         }
       }
     };
-
     return response;
   }
 
@@ -86,11 +85,22 @@ module.exports = class Response {
     return response;
   }
 
+  static genHyperlinkTemplate(urlparameter) {
+    let response = {
+      attachment: {
+        type: "file",
+        payload: {
+          url: urlparameter
+        }
+      }
+    };
+    return response;
+  }
+
   static genText(text) {
     let response = {
       text: text
     };
-
     return response;
   }
 
@@ -123,7 +133,7 @@ module.exports = class Response {
 
     return response;
   }
-
+  //retorna saludo
   static genNuxMessage(user) {
     let welcome = this.genText(
       i18n.__("get_started.welcome", {
@@ -133,17 +143,31 @@ module.exports = class Response {
 
     let guide = this.genText(i18n.__("get_started.guidance"));
 
-    let curation = this.genQuickReply(i18n.__("get_started.help"), [
+    // let inputname = this.genText(i18n.__("get_started.input_select"));
+
+    let inputname = this.genQuickReply(i18n.__("get_started.input_select"), [
       {
-        title: i18n.__("menu.suggestion"),
-        payload: "CURATION"
+        title: i18n.__("menu.complaints_1"),
+        payload: "complaints_1"
       },
       {
-        title: i18n.__("menu.help"),
-        payload: "CARE_HELP"
+        title: i18n.__("menu.complaints_2"),
+        payload: "complaints_2"
+      },
+      {
+        title: i18n.__("menu.complaints_3"),
+        payload: "complaints_3"
+      },
+      {
+        title: i18n.__("menu.complaints_4"),
+        payload: "complaints_4"
       }
     ]);
 
-    return [welcome, guide, curation];
+    let mypayload = {
+      payload: "mygreetings"
+    };
+
+    return [welcome, guide, inputname, mypayload];
   }
 };

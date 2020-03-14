@@ -16,14 +16,14 @@ const express = require("express"),
   crypto = require("crypto"),
   path = require("path"),
   Receive = require("./services/receive"),
+  DemoTable = require("./demo-table"),
   GraphAPi = require("./services/graph-api"),
   User = require("./services/user"),
   config = require("./services/config"),
   i18n = require("./i18n.config"),
   app = express();
-
+const { v4: uuidv4 } = require("uuid");
 var users = {};
-
 // Parse application/x-www-form-urlencoded
 app.use(
   urlencoded({
@@ -31,6 +31,7 @@ app.use(
   })
 );
 
+//Test test
 // Parse application/json. Verify that callback came from Facebook
 app.use(json({ verify: verifyRequestSignature }));
 
@@ -69,7 +70,7 @@ app.get("/webhook", (req, res) => {
 // Creates the endpoint for your webhook
 app.post("/webhook", (req, res) => {
   let body = req.body;
-
+  //test
   // Checks if this is an event from a page subscription
   if (body.object === "page") {
     // Returns a '200 OK' response to all requests
@@ -77,7 +78,10 @@ app.post("/webhook", (req, res) => {
 
     // Iterates over each entry - there may be multiple if batched
     body.entry.forEach(function(entry) {
+      // Get the webhook event. entry.messaging is an array, but
+      // will only ever contain one event, so we get index 0
       if ("changes" in entry) {
+        console.log("Changes Happend");
         // Handle Page Changes event
         let receiveMessage = new Receive();
         if (entry.changes[0].field === "feed") {
@@ -96,33 +100,34 @@ app.post("/webhook", (req, res) => {
               );
               break;
             default:
-              console.log('Unsupported feed change type.');
+              console.log("Unsupported feed change type.");
               return;
           }
         }
       }
 
       // Gets the body of the webhook event
-      let webhookEvent = entry.messaging[0];
-      // console.log(webhookEvent);
+      let webhook_event = entry.messaging[0];
+      //console.log("Gets the body of the webhook event ");
+      //console.log(webhook_event);
 
       // Discard uninteresting events
-      if ("read" in webhookEvent) {
-        // console.log("Got a read event");
+      if ("read" in webhook_event) {
+        //console.log("Got a read event xd ");
         return;
       }
 
-      if ("delivery" in webhookEvent) {
-        // console.log("Got a delivery event");
+      if ("delivery" in webhook_event) {
+        //console.log("Got a delivery event xd");
         return;
       }
 
       // Get the sender PSID
-      let senderPsid = webhookEvent.sender.id;
+      let senderPsid = webhook_event.sender.id;
 
       if (!(senderPsid in users)) {
         let user = new User(senderPsid);
-
+        console.log("Entro a Crear User");
         GraphAPi.getUserProfile(senderPsid)
           .then(userProfile => {
             user.setProfile(userProfile);
@@ -140,10 +145,13 @@ app.post("/webhook", (req, res) => {
               "with locale:",
               i18n.getLocale()
             );
-            let receiveMessage = new Receive(users[senderPsid], webhookEvent);
-            return receiveMessage.handleMessage();
+            console.log("Full user");
+            console.log(users[senderPsid]);
+            let receiveMessage = new Receive(users[senderPsid], webhook_event);
+            return receiveMessage.handleMessage(user.state);
           });
       } else {
+        console.log("Entro a Asignar User");
         i18n.setLocale(users[senderPsid].locale);
         console.log(
           "Profile already exists PSID:",
@@ -151,12 +159,246 @@ app.post("/webhook", (req, res) => {
           "with locale:",
           i18n.getLocale()
         );
-        let receiveMessage = new Receive(users[senderPsid], webhookEvent);
-        return receiveMessage.handleMessage();
+        console.log("Full user");
+        console.log(users[senderPsid]);
+        let receiveMessage = new Receive(users[senderPsid], webhook_event);
+        try {
+          if (webhook_event.postback) {
+            if (webhook_event.postback.title) {
+              if (webhook_event.postback.title === "Get Started") {
+                console.log("Inicializamos en postback get started");
+                users[senderPsid].state = "getstarted";
+                users[senderPsid].typeOfReport = "";
+                users[senderPsid].legalName = "";
+                users[senderPsid].legalDni = "";
+                users[senderPsid].legalBirthday = "";
+                users[senderPsid].cellphone = "";
+                users[senderPsid].legalEmail = "";
+                users[senderPsid].legaladdress = "";
+                users[senderPsid].photoUrl = "";
+                users[senderPsid].dateOfFact = "";
+                users[senderPsid].addressFact = "";
+                users[senderPsid].howFact = "";
+                users[senderPsid].detailFact = "";
+                users[senderPsid].evidenceUrl = "";
+                let random = uuidv4();
+                console.log("Generado nuevo random");
+                console.log(random);
+                users[senderPsid].idreport = random.substring(30, 40);
+                users[senderPsid].idDocument = random;
+              }
+            }
+          }
+          //webhookEvent.message.quick_reply.payload
+          if (webhook_event.message) {
+            if (webhook_event.message.quick_reply) {
+              if (webhook_event.message.quick_reply.payload) {
+                if (
+                  webhook_event.message.quick_reply.payload ===
+                  "deny_confirmation"
+                ) {
+                  users[senderPsid].state = "nombre";
+                  console.log("Deny confirmation app.js");
+                } else if (
+                  webhook_event.message.quick_reply.payload ===
+                  "decline_evidence"
+                ) {
+                  users[senderPsid].state = "finish";
+                  console.log("decline confirmation app.js");
+
+                  console.log("PROCESO TERMINADO sin file ADJUNTO");
+                  let pdfReport = new DemoTable(users[senderPsid]);
+
+                  pdfReport.createPDF().then(successMessage => {
+                    // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
+                    // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
+                    console.log("¡Sí! " + successMessage);
+                    console.log("Se creo el PDF");
+                  });
+                } else if (
+                  webhook_event.message.quick_reply.payload ===
+                  "accept_evidence"
+                ) {
+                  console.log("accept evidence  app.js");
+
+                  users[senderPsid].state = "evidence_confirmed";
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.error(error);
+          console.log(`An error has occured: '${error}'. We have been notified and \
+        will fix the issue shortly!`);
+        }
+        console.log("Envia el mensaje a analizar si es un message or postback");
+        console.log("-------------------------------------");
+        console.log("Estado a entrar");
+        console.log(users[senderPsid].state);
+        let varResponse = receiveMessage.handleMessage(users[senderPsid].state);
+        if (varResponse != null) {
+          if (varResponse.length === 4) {
+            if (varResponse[3].payload === "mygreetings") {
+              console.log("My greetings");
+              users[senderPsid].state = "getstarted";
+              users[senderPsid].typeOfReport = "";
+              users[senderPsid].legalName = "";
+              users[senderPsid].legalDni = "";
+              users[senderPsid].legalBirthday = "";
+              users[senderPsid].cellphone = "";
+              users[senderPsid].legalEmail = "";
+              users[senderPsid].legaladdress = "";
+              users[senderPsid].photoUrl = "";
+              users[senderPsid].dateOfFact = "";
+              users[senderPsid].addressFact = "";
+              users[senderPsid].howFact = "";
+              users[senderPsid].detailFact = "";
+              users[senderPsid].evidenceUrl = "";
+              let random = uuidv4();
+              console.log("Generado nuevo random");
+              console.log(random);
+              users[senderPsid].idreport = random.substring(30, 40);
+              users[senderPsid].idDocument = random;
+            }
+          } else if (varResponse.length === 2) {
+            if (varResponse[1].payload === "mygreetings") {
+              console.log("My greetings");
+              users[senderPsid].state = "getstarted";
+              users[senderPsid].typeOfReport = "";
+              users[senderPsid].legalName = "";
+              users[senderPsid].legalDni = "";
+              users[senderPsid].legalBirthday = "";
+              users[senderPsid].cellphone = "";
+              users[senderPsid].legalEmail = "";
+              users[senderPsid].legaladdress = "";
+              users[senderPsid].photoUrl = "";
+              users[senderPsid].dateOfFact = "";
+              users[senderPsid].addressFact = "";
+              users[senderPsid].howFact = "";
+              users[senderPsid].detailFact = "";
+              users[senderPsid].evidenceUrl = "";
+              let random = uuidv4();
+              console.log("Generado nuevo random");
+              console.log(random);
+              users[senderPsid].idreport = random.substring(30, 40);
+              users[senderPsid].idDocument = random;
+            }
+          }
+        }
+        console.log("El response a retornar:");
+        console.log(varResponse);
+        if (
+          users[senderPsid].state === "recomendation1" ||
+          users[senderPsid].state === "recomendation2" ||
+          users[senderPsid].state === "recomendation3" ||
+          (users[senderPsid].state === "recomendation4" && varResponse != null)
+        ) {
+          users[senderPsid].howFact = varResponse[2].payload;
+        }
+        if (users[senderPsid].state === "getstarted" && varResponse != null) {
+          users[senderPsid].state = "select_input";
+        } else if (
+          users[senderPsid].state === "select_input" &&
+          varResponse != null
+        ) {
+          console.log(
+            "complaintType a asignar: " + varResponse[1].complaintType
+          );
+          users[senderPsid].complaintType = varResponse[1].complaintType;
+          users[senderPsid].state = "confirm_input";
+        } else if (
+          users[senderPsid].state === "confirm_input" &&
+          varResponse != null
+        ) {
+          console.log(
+            "Confirm input stado , a asignar: " + varResponse[1].payload
+          );
+          users[senderPsid].typeOfReport = varResponse[1].payload;
+          users[senderPsid].state = "nombre";
+        } else if (
+          users[senderPsid].state === "nombre" &&
+          varResponse != null
+        ) {
+          console.log("nombre estado a asignar: " + varResponse[1].payload);
+          users[senderPsid].legalName = varResponse[1].payload;
+          users[senderPsid].state = "dni";
+        } else if (users[senderPsid].state === "dni" && varResponse != null) {
+          users[senderPsid].legalDni = varResponse[1].payload;
+          users[senderPsid].state = "birthday";
+        } else if (
+          users[senderPsid].state === "birthday" &&
+          varResponse != null
+        ) {
+          users[senderPsid].legalBirthday = varResponse[1].payload;
+          users[senderPsid].state = "cel";
+        } else if (users[senderPsid].state === "cel" && varResponse != null) {
+          users[senderPsid].cellphone = varResponse[1].payload;
+          users[senderPsid].state = "email";
+        } else if (users[senderPsid].state === "email" && varResponse != null) {
+          users[senderPsid].state = "address";
+          users[senderPsid].legalEmail = varResponse[1].payload;
+        } else if (
+          users[senderPsid].state === "address" &&
+          varResponse != null
+        ) {
+          users[senderPsid].legaladdress = varResponse[1].payload;
+          users[senderPsid].state = "photoquestion";
+        } else if (
+          users[senderPsid].state === "photoquestion" &&
+          varResponse != null
+        ) {
+          users[senderPsid].state = "preparationquestion";
+        } else if (
+          users[senderPsid].state === "preparationquestion" &&
+          varResponse != null
+        ) {
+          users[senderPsid].state = "when";
+        } else if (users[senderPsid].state === "when" && varResponse != null) {
+          users[senderPsid].dateOfFact = varResponse[1].payload;
+          users[senderPsid].state = "where";
+        } else if (users[senderPsid].state === "where" && varResponse != null) {
+          users[senderPsid].addressFact = varResponse[2].payload;
+          if (users[senderPsid].typeOfReport === "yes_1") {
+            users[senderPsid].state = "recomendation1";
+          }
+          if (users[senderPsid].typeOfReport === "yes_2") {
+            users[senderPsid].state = "recomendation2";
+          }
+          if (users[senderPsid].typeOfReport === "yes_3") {
+            users[senderPsid].state = "recomendation3";
+          }
+          if (users[senderPsid].typeOfReport === "yes_4") {
+            users[senderPsid].state = "recomendation4";
+          }
+        } else if (
+          users[senderPsid].state === "evidence_confirmed" &&
+          varResponse != null
+        ) {
+          users[senderPsid].state = "file_input";
+        } else if (
+          users[senderPsid].state === "file_input" &&
+          varResponse != null
+        ) {
+          users[senderPsid].state = "finish";
+          console.log("PROCESO TERMINADO con file ADJUNTO");
+          let pdfReport = new DemoTable(users[senderPsid]);
+
+          pdfReport.createPDF().then(successMessage => {
+            // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
+            // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
+            console.log("¡Sí! " + successMessage);
+            console.log("Se creo el PDF");
+          });
+        }
+        console.log("Estado cambiado");
+        console.log("-------------------------------------");
+        console.log(users[senderPsid].state);
+        return varResponse;
       }
     });
   } else {
     // Returns a '404 Not Found' if event is not from a page subscription
+    console.log("Not found 404");
     res.sendStatus(404);
   }
 });
@@ -171,7 +413,6 @@ app.get("/profile", (req, res) => {
   }
   var Profile = require("./services/profile.js");
   Profile = new Profile();
-
   // Checks if a token and mode is in the query string of the request
   if (mode && token) {
     if (token === config.verifyToken) {

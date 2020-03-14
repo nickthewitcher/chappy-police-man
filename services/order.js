@@ -35,6 +35,8 @@ module.exports = class Order {
             payload: "CARE_ORDER"
           }
         ]);
+        console.log("Order.js help");
+
         break;
 
       case "SEARCH_ORDER":
